@@ -24,4 +24,11 @@ export async function POST(req: Request) {
 
 // GET - Listar atividades
 export async function GET() {
-  const activities = await prism
+  const activities = await prisma.activity.findMany({
+    orderBy: {
+      date: "desc",
+    },
+  });
+
+  return NextResponse.json(activities);
+}
