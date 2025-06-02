@@ -1,0 +1,34 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Refeicao {
+  id         Int        @id @default(autoincrement())
+  tipo       String
+  data       DateTime   @default(now())
+  alimentos  Alimento[]
+}
+
+model Alimento {
+  id           Int       @id @default(autoincrement())
+  nome         String
+  calorias     Float
+  proteina     Float
+  carboidrato  Float
+  gordura      Float
+  codigoBarras String?
+  refeicaoId   Int
+  refeicao     Refeicao  @relation(fields: [refeicaoId], references: [id])
+}
+
+model Atividade {
+  id             Int      @id @default(autoincrement())
+  nome           String
+  caloriasGastas Float
+  data           DateTime @default(now())
+}
