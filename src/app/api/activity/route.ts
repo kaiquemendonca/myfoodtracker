@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
-import { prisma } from '@/lib/prisma'
+import { prisma } from "@/lib/prisma";
 
+type ActivityBody = {
+  name: string;
+  calories: number;
+  date: string;
+};
 
 // POST - Cadastrar uma atividade
 export async function POST(req: Request) {
-  const { name, calories, date } = await req.json();
+  const { name, calories, date }: ActivityBody = await req.json();
 
   const activity = await prisma.activity.create({
     data: {
@@ -19,11 +24,4 @@ export async function POST(req: Request) {
 
 // GET - Listar atividades
 export async function GET() {
-  const activities = await prisma.activity.findMany({
-    orderBy: {
-      date: "desc",
-    },
-  });
-
-  return NextResponse.json(activities);
-}
+  const activities = await prism
