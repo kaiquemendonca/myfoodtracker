@@ -79,7 +79,7 @@ export default function Refeicoes() {
                                     <strong>{meal.name}</strong> - {new Date(meal.date).toLocaleDateString()}
                                 </div>
                                 <button
-                                    className="text-blue-600 text-sm"
+                                    className="text-blue-600 text-sm "
                                     onClick={() =>
                                         setSelectedMealId(selectedMealId === meal.id ? null : meal.id)
                                     }
