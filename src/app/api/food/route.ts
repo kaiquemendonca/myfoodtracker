@@ -1,21 +1,31 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const barcode = searchParams.get('barcode');
-  const query = searchParams.get('query');
+const prisma = new PrismaClient();
 
-  let url = '';
-  if (barcode) {
-    url = `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`;
-  } else if (query) {
-    url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${query}&search_simple=1&action=process&json=1`;
-  } else {
-    return NextResponse.json({ error: 'No barcode or query provided' }, { status: 400 });
+export async function POST(req: Request) {
+  const { barcode, mealId } = await req.json();
+
+  const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcode}.json`);
+  const data = await res.json();
+
+  if (!data.product) {
+    return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
   }
 
-  const response = await fetch(url);
-  const data = await response.json();
+  const nutriments = data.product.nutriments;
 
-  return NextResponse.json(data);
+  const food = await prisma.food.create({
+    data: {
+      name: data.product.product_name || "Produto sem nome",
+      barcode,
+      calories: nutriments["energy-kcal_100g"] || 0,
+      protein: nutriments["proteins_100g"] || 0,
+      carbs: nutriments["carbohydrates_100g"] || 0,
+      fat: nutriments["fat_100g"] || 0,
+      mealId,
+    },
+  });
+
+  return NextResponse.json(food);
 }

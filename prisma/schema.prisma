@@ -7,28 +7,32 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Refeicao {
-  id         Int        @id @default(autoincrement())
-  tipo       String
-  data       DateTime   @default(now())
-  alimentos  Alimento[]
+model Food {
+  id            String   @id @default(uuid())
+  name          String
+  barcode       String?
+  calories      Float
+  protein       Float
+  carbs         Float
+  fat           Float
+  createdAt     DateTime @default(now())
+  meal          Meal     @relation(fields: [mealId], references: [id])
+  mealId        String
 }
 
-model Alimento {
-  id           Int       @id @default(autoincrement())
-  nome         String
-  calorias     Float
-  proteina     Float
-  carboidrato  Float
-  gordura      Float
-  codigoBarras String?
-  refeicaoId   Int
-  refeicao     Refeicao  @relation(fields: [refeicaoId], references: [id])
+model Meal {
+  id        String   @id @default(uuid())
+  name      String   // café da manhã, almoço, lanche, jantar
+  date      DateTime
+  foods     Food[]
+  createdAt DateTime @default(now())
 }
 
-model Atividade {
-  id             Int      @id @default(autoincrement())
-  nome           String
-  caloriasGastas Float
-  data           DateTime @default(now())
+model activity {
+  id        Int      @id @default(autoincrement())
+  name      String
+  calories  Int
+  date      DateTime
+  createdAt DateTime @default(now())
 }
+

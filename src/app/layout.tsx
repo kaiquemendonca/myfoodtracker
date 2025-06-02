@@ -17,7 +17,7 @@ export default function RootLayout({
         <nav className="flex items-center justify-between p-4 bg-gray-800 text-white">
           <div className="text-xl font-bold">My Food Tracker</div>
           <div className="space-x-6">
-            <Link href="/" className="hover:text-gray-300">
+            <Link href="/dashboard" className="hover:text-gray-300">
               Dashboard
             </Link>
             <Link href="/refeicoes" className="hover:text-gray-300">
