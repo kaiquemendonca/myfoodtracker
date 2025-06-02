@@ -1,8 +1,9 @@
-import './globals.css';
+import Link from "next/link";
+import "./globals.css";
 
 export const metadata = {
-  title: 'Food Tracker',
-  description: 'Controle de refeições e gasto calórico',
+  title: "My Food Tracker",
+  description: "Controle sua alimentação e treino",
 };
 
 export default function RootLayout({
@@ -12,7 +13,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt">
-      <body className="bg-gray-100">{children}</body>
+      <body className="bg-white text-black">
+        <nav className="flex items-center justify-between p-4 bg-gray-800 text-white">
+          <div className="text-xl font-bold">My Food Tracker</div>
+          <div className="space-x-6">
+            <Link href="/" className="hover:text-gray-300">
+              Dashboard
+            </Link>
+            <Link href="/refeicoes" className="hover:text-gray-300">
+              Refeições
+            </Link>
+            <Link href="/atividades" className="hover:text-gray-300">
+              Atividades
+            </Link>
+          </div>
+        </nav>
+        <main className="p-6">{children}</main>
+      </body>
     </html>
   );
 }
